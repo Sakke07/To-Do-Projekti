@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TODO - Projekti</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container" aria-live="polite">
+    <h1>TODO - Tehtävälista</h1>
+
+    <!-- Lomake -->
+    <form id="todoForm" class="form" novalidate>
+      <div class="field">
+        <label for="title">Tehtävä <small>(väh. 3 merkkiä)</small></label>
+        <input id="title" name="title" type="text" placeholder="Kirjoita tehtävä..." />
+        <span class="error" id="titleError" aria-hidden="true"></span>
+      </div>
+
+      <div class="field">
+        <label for="priority">Prioriteetti</label>
+        <select id="priority" name="priority">
+          <option value="low">Matala</option>
+          <option value="medium" selected>Keskitaso</option>
+          <option value="high">Korkea</option>
+        </select>
+      </div>
+
+      <div class="field-inline">
+        <label class="checkbox-label">
+          <input id="remind" name="remind" type="checkbox" /> Muistuta
+        </label>
+        <button id="addBtn" type="submit" class="primary">Lisää</button>
+      </div>
+    </form>
+
+    <!-- Toiminnot -->
+    <div class="controls">
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">Kaikki</button>
+        <button class="filter-btn" data-filter="active">Aktiiviset</button>
+        <button class="filter-btn" data-filter="done">Tehdyt</button>
+      </div>
+
+      <div class="actions">
+        <button id="toggleCompleted" type="button">Piilota tehdyt</button>
+        <button id="clearCompleted" type="button">Poista tehdyt</button>
+        <button id="clearAll" type="button">Tyhjennä kaikki</button>
+      </div>
+    </div>
+
+    <!-- Lista -->
+    <ul id="taskList" class="task-list" aria-label="Tehtävät"></ul>
+
+    <!-- Alatiedot -->
+    <div class="status">
+      <span id="counter">0 auki</span>
+      <button id="saveManual" type="button" class="secondary">Tallenna (manuaal.)</button>
+    </div>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

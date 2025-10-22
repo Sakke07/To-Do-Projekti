@@ -1,0 +1,34 @@
+:root{
+  --bg:#f6f8fb; --card:#fff; --primary:#2d8cff; --danger:#d9534f; --muted:#777;
+}
+*{box-sizing:border-box}
+body{font-family:Inter, Roboto, system-ui, Arial; background:var(--bg); margin:0; padding:28px;}
+.container{max-width:720px;margin:0 auto;background:var(--card);padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(15,15,15,.06);}
+h1{margin:0 0 14px;font-size:22px}
+.form{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+.field{display:flex;flex-direction:column}
+.field-inline{display:flex;gap:12px;align-items:center}
+input[type="text"], select{padding:8px 10px;border:1px solid #dcdcdc;border-radius:6px;font-size:15px}
+input[type="text"].invalid, select.invalid{border-color:var(--danger); box-shadow:0 0 0 3px rgba(217,83,79,0.08)}
+.error{color:var(--danger);font-size:13px;height:16px;margin-top:4px}
+.primary{background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+.secondary{background:#eee;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.filters{display:flex; gap:6px}
+.filter-btn{background:#fff;border:1px solid #e6e6e6;padding:6px 8px;border-radius:6px;cursor:pointer}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.actions{display:flex;gap:6px}
+.task-list{list-style:none;padding:0;margin:0;border-top:1px solid #f0f0f0}
+.task{display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #f3f3f3}
+.task .text{flex:1}
+.task.done .text{ text-decoration:line-through;color:#888}
+.task .meta{font-size:13px;color:var(--muted);margin-left:8px}
+.btn{padding:6px 8px;border-radius:6px;border:1px solid #e6e6e6;background:#fff;cursor:pointer}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.counter{font-size:14px;color:var(--muted)}
+.draggable{cursor:grab}
+.drag-over{outline:2px dashed #aaa}
+@media (max-width:520px){
+ .controls{flex-direction:column;align-items:flex-start}
+ .field-inline{flex-direction:column;align-items:flex-start}
+}
