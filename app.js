@@ -1,7 +1,6 @@
-// app.js - natiivi JavaScript + localStorage
+
 const STORAGE_KEY = 'mytodo.tasks.v1';
 
-// DOM
 const form = document.querySelector('#todoForm');
 const titleInput = document.querySelector('#title');
 const priorityInput = document.querySelector('#priority');
@@ -17,14 +16,13 @@ const clearCompletedBtn = document.querySelector('#clearCompleted');
 const clearAllBtn = document.querySelector('#clearAll');
 const saveManualBtn = document.querySelector('#saveManual');
 
-let tasks = loadTasks();           // sovelluksen tila
+let tasks = loadTasks();           
 let currentFilter = 'all';
 let hideCompleted = false;
 
-// initial render
 render();
 
-// --- Lomakkeen käsittely (lisää tehtävä)
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   clearValidation();
@@ -33,7 +31,7 @@ form.addEventListener('submit', (e) => {
   const priority = priorityInput.value;
   const remind = remindInput.checked;
 
-  // Validointi
+  
   if (!title) {
     showValidationError('title', 'Tehtävä ei saa olla tyhjä.');
     return;
@@ -59,7 +57,7 @@ form.addEventListener('submit', (e) => {
   titleInput.focus();
 });
 
-// --- Filternapit
+
 filterButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     filterButtons.forEach(b => b.classList.remove('active'));
@@ -69,7 +67,7 @@ filterButtons.forEach(btn => {
   });
 });
 
-// --- Toiminnot
+
 toggleCompletedBtn.addEventListener('click', () => {
   hideCompleted = !hideCompleted;
   toggleCompletedBtn.textContent = hideCompleted ? 'Näytä tehdyt' : 'Piilota tehdyt';
@@ -95,7 +93,7 @@ saveManualBtn.addEventListener('click', () => {
   alert('Tallennettu!');
 });
 
-// --- CRUD-funktiot
+
 function toggleDone(id) {
   const t = tasks.find(x => x.id === id);
   if (!t) return;
@@ -118,7 +116,7 @@ function editTask(id, newTitle) {
   render();
 }
 
-// --- Tallennus & lataus
+
 function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
@@ -133,11 +131,11 @@ function loadTasks() {
   }
 }
 
-// --- Render
+
 function render() {
   taskList.innerHTML = '';
 
-  // suodatus
+  
   let visible = tasks.slice();
   if (currentFilter === 'active') visible = visible.filter(t => !t.done);
   if (currentFilter === 'done') visible = visible.filter(t => t.done);
@@ -156,13 +154,13 @@ function render() {
       li.draggable = true;
       if (task.done) li.classList.add('done');
 
-      // checkbox
+      
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.checked = task.done;
       cb.addEventListener('change', () => toggleDone(task.id));
 
-      // teksti (editable)
+      
       const txt = document.createElement('div');
       txt.className = 'text';
       txt.textContent = task.title;
@@ -178,7 +176,6 @@ function render() {
         function finish() {
           const val = input.value.trim();
           if (!val) {
-            // jos tyhjä, peruuta/muista ilmoittaa
             alert('Teksti ei saa olla tyhjä.');
             render();
             return;
@@ -192,7 +189,7 @@ function render() {
         });
       });
 
-      // meta & toiminto-napit
+      
       const meta = document.createElement('div');
       meta.className = 'meta';
       meta.textContent = `${task.priority}${ task.remind ? ' • muistutus' : ''}`;
@@ -204,13 +201,13 @@ function render() {
         if (confirm('Poistetaanko tehtävä?')) deleteTask(task.id);
       });
 
-      // kokoonpano
+      
       li.appendChild(cb);
       li.appendChild(txt);
       li.appendChild(meta);
       li.appendChild(btnDel);
 
-      // drag/drop tapahtumat
+      
       li.addEventListener('dragstart', dragStart);
       li.addEventListener('dragover', dragOver);
       li.addEventListener('drop', drop);
@@ -220,16 +217,14 @@ function render() {
     });
   }
 
-  // laskuri
+
   const openCount = tasks.filter(t => !t.done).length;
   counterEl.textContent = `${openCount} auki`;
 
-  // päivitä localStorage automaattisesti
-  // (jos haluat vain manuaalista tallenusta, poista tämä)
   saveTasks();
 }
 
-// --- Validointi UI
+
 function showValidationError(field, msg) {
   if (field === 'title') {
     titleInput.classList.add('invalid');
@@ -243,7 +238,6 @@ function clearValidation() {
   titleError.setAttribute('aria-hidden', 'true');
 }
 
-// --- Drag & drop käsittely (yksinkertainen järjestyksen muuttaminen)
 let dragSrcId = null;
 function dragStart(e) {
   this.classList.add('draggable');
@@ -261,12 +255,12 @@ function drop(e) {
   const targetId = this.dataset.id;
   if (!dragSrcId || dragSrcId === targetId) return;
 
-  // vaihdetaan järjestystä: sijoita dragged element ennen targettia
+  
   const srcIndex = tasks.findIndex(t => t.id === dragSrcId);
   const tgtIndex = tasks.findIndex(t => t.id === targetId);
   if (srcIndex < 0 || tgtIndex < 0) return;
 
-  // poista src ja sijoita ennen target-indexiä
+  
   const [moved] = tasks.splice(srcIndex, 1);
   tasks.splice(tgtIndex, 0, moved);
   saveTasks();
@@ -278,7 +272,6 @@ function dragEnd() {
   dragSrcId = null;
 }
 
-// --- apufunktiot
 function generateId() {
   if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
   return Math.random().toString(36).slice(2,9);
